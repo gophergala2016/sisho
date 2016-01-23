@@ -3,7 +3,6 @@ package sisho
 import (
 	"log"
 	"os"
-	"os/exec"
 	"strings"
 )
 
@@ -17,7 +16,6 @@ Steps.
 	* toc.ncx
 	* META-INF/container.xml (static)
 * epubify all files
-* clean .tmp directory
 
 * If have a time...
 * jump defined some func or class or variable.
@@ -38,9 +36,18 @@ type content struct {
 	name string
 }
 
+const (
+	tmpDir string = ".tmp"
+)
+
 func Run() {
 	s := NewSisho("github.com/kogai/golip")
-	err := s.clone()
+	var err error
+
+	err = s.clone()
+	s.log.Println(err)
+
+	err = s.clean()
 	s.log.Println(err)
 }
 
@@ -53,13 +60,4 @@ func NewSisho(repoPath string) *Sisho {
 		repoName: ss[2],
 		repoURI:  "git@" + ss[0] + ":" + ss[1] + "/" + ss[2] + ".git",
 	}
-}
-
-func (s *Sisho) clone() error {
-	// * clone repository
-	_, err := exec.Command("git", "clone", s.repoURI, ".tmp").Output()
-	if err != nil {
-		return err
-	}
-	return nil
 }
