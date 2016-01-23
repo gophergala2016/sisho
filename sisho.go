@@ -89,12 +89,14 @@ func NewSisho(repoPath string) *Sisho {
 func (s *Sisho) epubify() error {
 	// * epubify all files
 	z := new(archivex.ZipFile)
+
 	z.Create(s.repoName)
 	z.AddFile(s.buildDir + "/mimetype")
 	z.AddFile(s.buildDir + "/META-INF/container.xml")
 	z.AddFile(s.buildDir + "/index.html")
+
 	// z.AddAll(s.buildDir, false)
-	z.Close()
+	defer z.Close()
 
 	var zip, epub string
 	zip = s.repoName + ".zip"

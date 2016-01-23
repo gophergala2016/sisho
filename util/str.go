@@ -2,6 +2,7 @@ package util
 
 import (
 	"path/filepath"
+	"regexp"
 	"strconv"
 	"strings"
 	"time"
@@ -24,4 +25,13 @@ func TimeToString(t time.Time) string {
 func IsBinary(path string) bool {
 	ext := filepath.Ext(path)
 	return ext == ".png" || ext == ".gif" || ext == ".jpg"
+}
+
+func NormalizeDotFile(filename string) string {
+	r := regexp.MustCompile("^[.]")
+	isStartWithDot := r.MatchString(filename)
+	if isStartWithDot {
+		return r.ReplaceAllString(filename, "dot-")
+	}
+	return filename
 }

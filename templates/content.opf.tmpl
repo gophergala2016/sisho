@@ -18,15 +18,23 @@
             media-type="application/xhtml+xml" />
     {{end }}
     {{range $i, $v := .Assets}}
-      <item href="{{$v.Path}}"
+      <item id="assets-{{$i}}"
+            href="{{$v.Path}}"
             media-type="{{$v.ContentType}}" />
     {{end }}
+      <item id="assets-css"
+            href="assets/style.css"
+            media-type="text/css" />
   </manifest>
 
   <spine toc="ncx">
-    {{range $i, $v := .HTMLContents}}<itemref idref="epub-{{$i}}" />{{end }}
+    {{range $i, $v := .HTMLContents}}
+      <itemref idref="epub-{{$i}}" />
+    {{end }}
+    {{range $i, $v := .Assets}}
+      <itemref idref="assets-{{$i}}" />
+    {{end }}
+
+    <itemref idref="assets-css" />
   </spine>
-  <guide>
-    <reference type="toc" title="Table of Contents" href="index.html" />
-  </guide>
 </package>
