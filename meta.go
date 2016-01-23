@@ -64,11 +64,11 @@ func (s *Sisho) gerenateMeta() error {
 
 	var opfF, ncxF *os.File
 
-	opfF, err = os.Create(s.buildDir + "/content.opf")
+	opfF, err = os.Create(s.buildDir + "/OEBPS/content.opf")
 	if err != nil {
 		return err
 	}
-	ncxF, err = os.Create(s.buildDir + "/toc.ncx")
+	ncxF, err = os.Create(s.buildDir + "/OEBPS/toc.ncx")
 	if err != nil {
 		return err
 	}
@@ -89,6 +89,11 @@ func (s *Sisho) gerenateMeta() error {
 	ncxT.Execute(ncxF, t)
 
 	// copy static files
+	err = util.CopyDir("templates/assets", s.buildDir+"/OEBPS/assets")
+	if err != nil {
+		return err
+	}
+
 	err = util.CopyDir("templates/static", s.buildDir)
 	if err != nil {
 		return err

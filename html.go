@@ -11,6 +11,7 @@ import (
 func (s *Sisho) generateHTMLs() error {
 	// * generate HTMLs
 	os.Mkdir(s.buildDir, 0777)
+	os.Mkdir(s.buildDir+"/OEBPS", 0777)
 
 	var wg *sync.WaitGroup = new(sync.WaitGroup)
 	var e chan error = make(chan error)
@@ -56,7 +57,7 @@ func (s *Sisho) generateHTML(c Code, wg *sync.WaitGroup, e chan error) error {
 		e <- err
 	}
 
-	f, err := os.Create(s.buildDir + "/" + filename)
+	f, err := os.Create(s.buildDir + "/OEBPS/" + filename)
 	if err != nil {
 		e <- err
 	}
