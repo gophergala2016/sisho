@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<package xmlns="http://www.idpf.org/2007/opf" version="2.0" unique-identifier="unknown">
+  <metadata xmlns:opf="http://www.idpf.org/2007/opf" xmlns:dc="http://purl.org/dc/elements/1.1/">
+    <dc:language>en</dc:language>
+    <dc:title>{{.Title}}</dc:title>
+    <dc:creator opf:role="aut">{{.Author}}</dc:creator>
+    <dc:publisher>{{.Author}}</dc:publisher>
+    <dc:rights>{{.Year}}, {{.Author}}</dc:rights>
+    <dc:identifier id="unknown" opf:scheme="URL">unknown</dc:identifier>
+    <dc:date>{{.Date}}</dc:date>
+  </metadata>
+
+  <manifest>
+    <item id="ncx" href="toc.ncx" media-type="application/x-dtbncx+xml" />
+    {{range $i, $v := .HTMLContents}}
+      <item id="epub-{{$i}}"
+            href="{{$v.Path}}"
+            media-type="application/xhtml+xml" />
+    {{end }}
+    {{range $i, $v := .Assets}}
+      <item href="{{$v.Path}}"
+            media-type="{{$v.ContentType}}" />
+    {{end }}
+  </manifest>
+
+  <spine toc="ncx">
+    {{range $i, $v := .HTMLContents}}<itemref idref="epub-{{$i}}" />{{end }}
+  </spine>
+  <guide>
+    <reference type="toc" title="Table of Contents" href="index.html" />
+  </guide>
+</package>

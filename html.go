@@ -2,6 +2,7 @@ package sisho
 
 import (
 	"bufio"
+	"github.com/gophergala2016/sisho/util"
 	"html/template"
 	"os"
 	"sync"
@@ -21,6 +22,7 @@ func (s *Sisho) generateHTMLs() error {
 
 	select {
 	case err := <-e:
+		s.log.Println(err)
 		close(e)
 		return err
 	default:
@@ -31,10 +33,8 @@ func (s *Sisho) generateHTMLs() error {
 	return nil
 }
 
-func (s *Sisho) generateHTML(c Content, wg *sync.WaitGroup, e chan error) error {
-	defer wg.Done()
-
-	title, filename := pathToHTMLfilename(c.path)
+func (s *Sisho) generateHTML(c Code, wg *sync.WaitGroup, e chan error) error {
+	title, filename := util.PathToHTMLfilename(c.path)
 	c.Title = title
 
 	file, err := os.Open(c.path)
@@ -51,7 +51,7 @@ func (s *Sisho) generateHTML(c Content, wg *sync.WaitGroup, e chan error) error 
 		e <- err
 	}
 
-	t, err := template.ParseFiles("templates/content.tmpl")
+	t, err := template.ParseFiles("templates/main.tmpl")
 	if err != nil {
 		e <- err
 	}
@@ -62,5 +62,7 @@ func (s *Sisho) generateHTML(c Content, wg *sync.WaitGroup, e chan error) error 
 	}
 
 	t.Execute(f, c)
+	defer wg.Done()
+
 	return nil
 }

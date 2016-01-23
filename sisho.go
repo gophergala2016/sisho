@@ -8,11 +8,6 @@ import (
 
 /*
 Steps.
-* create meta files
-	* content.opf
-	* mimetype (static)
-	* toc.ncx
-	* META-INF/container.xml (static)
 * epubify all files
 
 * If have a time...
@@ -28,14 +23,26 @@ type Sisho struct {
 	repoURI  string
 	tmpDir   string
 	buildDir string
-	contents []Content
+	contents []Code
+	assets   []Asset
 }
 
 type Content struct {
-	path      string
-	name      string
+	path         string
+	relativePath string
+	name         string
+	contentType  string
+}
+
+type Code struct {
+	Content
 	Title     string
 	TextLines []string
+}
+
+type Asset struct {
+	Content
+	ext string
 }
 
 const (
@@ -46,13 +53,16 @@ func Run() {
 	s := NewSisho("github.com/kogai/golip")
 	var err error
 
-	err = s.walkRepo()
-	s.log.Println(err)
-
 	err = s.clone()
 	s.log.Println(err)
 
+	err = s.walkRepo()
+	s.log.Println(err)
+
 	err = s.generateHTMLs()
+	s.log.Println(err)
+
+	err = s.gerenateMeta()
 	s.log.Println(err)
 
 	// err = s.clean()

@@ -1,6 +1,8 @@
 package sisho
 
 import (
+	"github.com/gophergala2016/sisho/util"
+	"mime"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -26,15 +28,38 @@ func (s *Sisho) walkRepo() error {
 		}
 
 		tmp := strings.Split(path, "/")
-		c := Content{
-			path:      path,
-			name:      tmp[len(tmp)-1],
+		name := tmp[len(tmp)-1]
+		ext := filepath.Ext(path)
+		r := regexp.MustCompile(s.tmpDir + "/")
+
+		if util.IsBinary(ext) {
+			a := Asset{
+				Content: Content{
+					path:         path,
+					relativePath: r.ReplaceAllString(path, ""),
+					name:         name,
+					contentType:  mime.TypeByExtension(ext),
+				},
+				ext: ext,
+			}
+			s.assets = append(s.assets, a)
+			return nil
+		}
+
+		c := Code{
+			Content: Content{
+				path:         path,
+				relativePath: r.ReplaceAllString(path, ""),
+				name:         name,
+				contentType:  mime.TypeByExtension(ext),
+			},
 			Title:     "",
 			TextLines: []string{},
 		}
 		s.contents = append(s.contents, c)
 		return nil
 	})
+
 	if err == nil {
 		return err
 	}
