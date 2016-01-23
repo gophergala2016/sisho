@@ -7,7 +7,7 @@ import (
 
 func (s *Sisho) clone() error {
 	// * clone repository
-	_, err := exec.Command("git", "clone", s.repoURI, tmpDir+s.repoUser+s.repoName).Output()
+	_, err := exec.Command("git", "clone", s.repoURI, s.tmpDir).Output()
 	if err != nil {
 		return err
 	}
@@ -16,7 +16,7 @@ func (s *Sisho) clone() error {
 
 func (s *Sisho) clean() error {
 	// * clean .tmp directory
-	err := os.RemoveAll(tmpDir + s.repoUser + s.repoName)
+	err := os.RemoveAll(s.tmpDir)
 	if err != nil {
 		return err
 	}
