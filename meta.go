@@ -1,6 +1,7 @@
 package sisho
 
 import (
+	"encoding/xml"
 	"github.com/gophergala2016/sisho/util"
 	"html/template"
 	"os"
@@ -68,7 +69,16 @@ func (s *Sisho) gerenateMeta() error {
 	if err != nil {
 		return err
 	}
+	_, err = opfF.WriteString(xml.Header)
+	if err != nil {
+		return err
+	}
+
 	ncxF, err = os.Create(s.buildDir + "/toc.ncx")
+	if err != nil {
+		return err
+	}
+	_, err = ncxF.WriteString(xml.Header)
 	if err != nil {
 		return err
 	}

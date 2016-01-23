@@ -66,8 +66,8 @@ func Run() {
 	err = s.gerenateMeta()
 	s.log.Println(err)
 
-	err = s.epubify()
-	s.log.Println(err)
+	// err = s.epubify()
+	// s.log.Println(err)
 
 	// err = s.clean()
 	// s.log.Println(err)
