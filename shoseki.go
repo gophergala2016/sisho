@@ -3,11 +3,12 @@ package sisho
 import (
 	"log"
 	"os"
+	"os/exec"
+	"strings"
 )
 
 /*
 Steps.
-* clone repository
 * walk repo and generate constitution of repo.
 * generate HTML
 * create meta files
@@ -27,7 +28,8 @@ Steps.
 type Sisho struct {
 	log      *log.Logger
 	repoName string
-	repoPath string
+	repoUser string
+	repoURI  string
 	contents []content
 }
 
@@ -37,12 +39,27 @@ type content struct {
 }
 
 func Run() {
-	s := NewSisho()
-	s.log.Println("hello")
+	s := NewSisho("github.com/kogai/golip")
+	err := s.clone()
+	s.log.Println(err)
 }
 
-func NewSisho() *Sisho {
+func NewSisho(repoPath string) *Sisho {
+	var ss []string = strings.Split(repoPath, "/")
+
 	return &Sisho{
-		log: log.New(os.Stdout, "", log.Lshortfile),
+		log:      log.New(os.Stdout, "", log.Lshortfile),
+		repoUser: ss[1],
+		repoName: ss[2],
+		repoURI:  "git@" + ss[0] + ":" + ss[1] + "/" + ss[2] + ".git",
 	}
+}
+
+func (s *Sisho) clone() error {
+	// * clone repository
+	_, err := exec.Command("git", "clone", s.repoURI, ".tmp").Output()
+	if err != nil {
+		return err
+	}
+	return nil
 }
