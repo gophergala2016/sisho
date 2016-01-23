@@ -1,1 +1,2 @@
-generate epub file from repository for source code reading.
+Sisho stands for librarian.
+It generates EPUB file from git-repository, for source code reading.
