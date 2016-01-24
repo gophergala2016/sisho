@@ -49,7 +49,7 @@ const (
 )
 
 func Run() {
-	s := NewSisho("github.com/kogai/golip")
+	s := NewSisho("github.com/dekujs/deku")
 	var err error
 
 	err = s.clone()

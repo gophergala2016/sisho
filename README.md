@@ -1,3 +1,2 @@
-Sisho stands for librarian.
-
-It generates EPUB file from git-repository, for source code reading.
+Sisho stands for `Librarian`.  
+It generates `EPUB` file from git-repository, for source code reading.
