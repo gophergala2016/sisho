@@ -1,9 +1,11 @@
 package sisho
 
 import (
+	"bytes"
 	"encoding/xml"
 	"github.com/gophergala2016/sisho/util"
 	"html/template"
+	"io"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -32,8 +34,18 @@ func (s *Sisho) gerenateMeta() error {
 	var opfT, ncxT *template.Template
 	var err error
 
-	opfT, err = template.ParseFiles("templates/content.opf.tmpl")
-	ncxT, err = template.ParseFiles("templates/toc.ncx.tmpl")
+	opfD, _ := Asset("templates/content.opf.tmpl")
+	ncxD, _ := Asset("templates/toc.ncx.tmpl")
+
+	opfT = template.New("opf")
+	ncxT = template.New("ncx")
+
+	opfT, err = opfT.Parse(string(opfD))
+	if err != nil {
+		return err
+	}
+
+	ncxT, err = ncxT.Parse(string(ncxD))
 	if err != nil {
 		return err
 	}
@@ -99,14 +111,41 @@ func (s *Sisho) gerenateMeta() error {
 	ncxT.Execute(ncxF, t)
 
 	// copy static files
-	err = util.CopyDir("templates/assets", s.buildDir+"/assets")
+	os.Mkdir(s.buildDir+"/assets", 0777)
+	os.Mkdir(s.buildDir+"/META-INF", 0777)
+
+	err = CopyFile("templates/assets/style.css", s.buildDir+"/assets/style.css")
 	if err != nil {
 		return err
 	}
 
-	err = util.CopyDir("templates/static", s.buildDir)
+	err = CopyFile("templates/static/META-INF/container.xml", s.buildDir+"/META-INF/container.xml")
 	if err != nil {
 		return err
 	}
+
+	err = CopyFile("templates/static/mimetype", s.buildDir+"/mimetype")
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func CopyFile(source, dest string) error {
+	d, err := Asset(source)
+	if err != nil {
+		return err
+	}
+
+	destfile, err := os.Create(dest)
+	if err != nil {
+		return err
+	}
+
+	_, err = io.Copy(destfile, bytes.NewReader(d))
+	if err != nil {
+		return err
+	}
+
 	return nil
 }

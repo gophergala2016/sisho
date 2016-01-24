@@ -33,7 +33,7 @@ func (s *Sisho) walkRepo() error {
 		r := regexp.MustCompile(s.tmpDir + "/")
 
 		if util.IsBinary(ext) {
-			a := Asset{
+			a := ContentAsset{
 				Content: Content{
 					path:         path,
 					relativePath: r.ReplaceAllString(path, ""),

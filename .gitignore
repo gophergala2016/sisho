@@ -1,2 +1,4 @@
 .sample
 *.epub
+
+bindata.go

@@ -27,7 +27,8 @@ func (s *Sisho) generateHTMLs() error {
 	case err := <-e:
 		s.log.Println(err)
 		close(e)
-		return err
+		panic(err)
+		break
 	default:
 		break
 	}
@@ -44,6 +45,7 @@ func (s *Sisho) generateHTML(c Code, wg *sync.WaitGroup, e chan error) error {
 
 	file, err := os.Open(c.path)
 	if err != nil {
+		s.log.Println(err)
 		e <- err
 	}
 
@@ -53,16 +55,22 @@ func (s *Sisho) generateHTML(c Code, wg *sync.WaitGroup, e chan error) error {
 		c.TextLines = append(c.TextLines, scanner.Text())
 	}
 	if err := scanner.Err(); err != nil {
+		s.log.Println(err)
 		e <- err
 	}
 
-	t, err := template.ParseFiles("templates/main.tmpl")
+	d, _ := Asset("templates/main.tmpl")
+	tmpl := template.New("main")
+
+	t, err := tmpl.Parse(string(d))
 	if err != nil {
+		s.log.Println(err)
 		e <- err
 	}
 
 	f, err := os.Create(s.buildDir + "/" + util.NormalizeDotFile(filename))
 	if err != nil {
+		s.log.Println(err)
 		e <- err
 	}
 
