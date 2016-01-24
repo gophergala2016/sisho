@@ -1,5 +1,6 @@
 .sample
 *.epub
+*.mobi
 
 bindata.go
 sisho
