@@ -14,7 +14,7 @@ type Sisho struct {
 	tmpDir   string
 	buildDir string
 	contents []Code
-	assets   []Asset
+	assets   []ContentAsset
 }
 
 type Content struct {
@@ -30,7 +30,7 @@ type Code struct {
 	TextLines []string
 }
 
-type Asset struct {
+type ContentAsset struct {
 	Content
 	ext string
 }
