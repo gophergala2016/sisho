@@ -11,3 +11,11 @@ sisho create github.com/gophergala2016/sisho
 ```
 
 ![](https://github.com/gophergala2016/sisho/blob/master/doc/sample.gif)
+
+
+## Install
+
+```bash
+brew tap kogai/sisho
+brew install sisho
+```
