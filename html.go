@@ -2,6 +2,7 @@ package sisho
 
 import (
 	"bufio"
+	"fmt"
 	"github.com/gophergala2016/sisho/util"
 	"html/template"
 	"os"
@@ -9,7 +10,9 @@ import (
 )
 
 func (s *Sisho) generateHTMLs() error {
-	// * generate HTMLs
+	fmt.Printf("Generating page files")
+
+	// Generate HTML files
 	os.Mkdir(s.buildDir, 0777)
 
 	var wg *sync.WaitGroup = new(sync.WaitGroup)
@@ -30,6 +33,8 @@ func (s *Sisho) generateHTMLs() error {
 	}
 
 	wg.Wait()
+
+	fmt.Println("OK\nPage files are generated.")
 	return nil
 }
 
@@ -62,6 +67,8 @@ func (s *Sisho) generateHTML(c Code, wg *sync.WaitGroup, e chan error) error {
 	}
 
 	t.Execute(f, c)
+
+	fmt.Printf(".")
 	defer wg.Done()
 
 	return nil
