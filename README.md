@@ -10,4 +10,4 @@ sisho create [pathtogitrepository]
 sisho create github.com/gophergala2016/sisho
 ```
 
-![](https://github.com/gophergala2016/sisho/blob/master/docs/sample.gif)
+![](https://github.com/gophergala2016/sisho/blob/master/doc/sample.gif)
