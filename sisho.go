@@ -1,8 +1,6 @@
 package sisho
 
 import (
-	"github.com/gophergala2016/sisho/util"
-	"github.com/jhoonb/archivex"
 	"log"
 	"os"
 	"strings"
@@ -66,11 +64,11 @@ func Run() {
 	err = s.gerenateMeta()
 	s.log.Println(err)
 
-	// err = s.epubify()
-	// s.log.Println(err)
+	err = s.epubify()
+	s.log.Println(err)
 
-	// err = s.clean()
-	// s.log.Println(err)
+	err = s.clean()
+	s.log.Println(err)
 }
 
 func NewSisho(repoPath string) *Sisho {
@@ -84,27 +82,4 @@ func NewSisho(repoPath string) *Sisho {
 		buildDir: tmpBaseDir + ss[1] + ss[2] + "/.build",
 		repoURI:  "git@" + ss[0] + ":" + ss[1] + "/" + ss[2] + ".git",
 	}
-}
-
-func (s *Sisho) epubify() error {
-	// * epubify all files
-	z := new(archivex.ZipFile)
-
-	z.Create(s.repoName)
-	z.AddFile(s.buildDir + "/mimetype")
-	z.AddFile(s.buildDir + "/META-INF/container.xml")
-	z.AddFile(s.buildDir + "/index.html")
-
-	// z.AddAll(s.buildDir, false)
-	defer z.Close()
-
-	var zip, epub string
-	zip = s.repoName + ".zip"
-	epub = s.repoName + ".epub"
-
-	err := util.CopyFile(zip, epub)
-	if err != nil {
-		return err
-	}
-	return nil
 }
