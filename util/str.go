@@ -24,7 +24,7 @@ func TimeToString(t time.Time) string {
 
 func IsBinary(path string) bool {
 	ext := filepath.Ext(path)
-	return ext == ".png" || ext == ".gif" || ext == ".jpg"
+	return ext == ".png" || ext == ".gif" || ext == ".jpg" || ext == ".mp3"
 }
 
 func NormalizeDotFile(filename string) string {
