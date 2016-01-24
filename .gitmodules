@@ -1,0 +1,3 @@
+[submodule "homebrew-sisho"]
+	path = homebrew-sisho
+	url = git@github.com:kogai/homebrew-sisho.git
