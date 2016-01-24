@@ -23,6 +23,7 @@
 .Sourceodes-line__index, .Sourceodes-line__body {
   padding: 4px 4px;
   font-weight: normal;
+  word-break: normal;
 }
 
 .Sourceodes-line:first-child .Sourceodes-line__index, .Sourceodes-line:first-child .Sourceodes-line__body {
@@ -43,6 +44,10 @@
 
 .Sourceodes-line__body pre {
   margin: 0;
+  word-break: normal;
 }
 
-.Sourceodes-line__body code {}
+.Sourceodes-line__body code {
+  word-break: normal;
+  white-space: pre-wrap;
+}
