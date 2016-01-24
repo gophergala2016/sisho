@@ -6,15 +6,6 @@ import (
 	"strings"
 )
 
-/*
-Steps.
-
-* If have a time...
-* jump defined some func or class or variable.
-* compress image files.
-* [x] goroutinize generate HTML step.
-*/
-
 type Sisho struct {
 	log      *log.Logger
 	repoName string
@@ -48,27 +39,35 @@ const (
 	tmpBaseDir string = ".tmp"
 )
 
-func Run() {
-	s := NewSisho("github.com/dekujs/deku")
+func Run(pathToRepository string) error {
+	s := NewSisho(pathToRepository)
 	var err error
 
-	err = s.clone()
-	s.log.Println(err)
+	if err = s.clone(); err != nil {
+		return err
+	}
 
-	err = s.walkRepo()
-	s.log.Println(err)
+	if err = s.walkRepo(); err != nil {
+		return err
+	}
 
-	err = s.generateHTMLs()
-	s.log.Println(err)
+	if err = s.generateHTMLs(); err != nil {
+		return err
+	}
 
-	err = s.gerenateMeta()
-	s.log.Println(err)
+	if err = s.gerenateMeta(); err != nil {
+		return err
+	}
 
-	err = s.epubify()
-	s.log.Println(err)
+	if err = s.epubify(); err != nil {
+		return err
+	}
 
-	err = s.clean()
-	s.log.Println(err)
+	if err = s.clean(); err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func NewSisho(repoPath string) *Sisho {
