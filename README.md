@@ -1,5 +1,5 @@
 Sisho stands for `Librarian`.  
-It generates `EPUB` file from git-repository, for source code reading.
+It generates `EPUB` file from git-repository as CLI, for source code reading.
 
 ## Usage
 
